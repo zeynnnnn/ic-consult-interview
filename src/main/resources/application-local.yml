@@ -7,7 +7,7 @@ springdoc:
     path: /swagger-ui.html
     oauth:
       client-id:
-      client-secret: 
+      client-secret:
       additional-query-string-params:
         audience: customer
       use-basic-authentication-with-access-code-grant: 'true'
@@ -31,10 +31,13 @@ spring:
         jwt:
           jwk-set-uri: https://icc-demo.eu.auth0.com/.well-known/jwks.json
           issuer-uri: https://icc-demo.eu.auth0.com/
+
 server:
   port: '8080'
+
 logging:
   level:
-    root: TRACE
+    root: DEBUG
+
 
 

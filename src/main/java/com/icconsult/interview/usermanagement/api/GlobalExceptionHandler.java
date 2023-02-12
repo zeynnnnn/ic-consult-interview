@@ -13,6 +13,7 @@
 package com.icconsult.interview.usermanagement.api;
 
 import com.icconsult.interview.usermanagement.api.dto.ErrorResponse;
+import com.icconsult.interview.usermanagement.exception.CustomerNotFoundException;
 import com.icconsult.interview.usermanagement.exception.NotAuthorizedException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -52,5 +53,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unknown error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(CustomerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "User ID is NOT found in the database.",
+                    content = @Content),
+    })
+    public ResponseEntity<ErrorResponse> handleNotFoundError(CustomerNotFoundException e) {
+        logger.info(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.getReasonPhrase(), "Not Found error."), HttpStatus.NOT_FOUND);
+    }
 
 }

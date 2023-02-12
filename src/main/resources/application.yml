@@ -31,10 +31,11 @@ spring:
         jwt:
           jwk-set-uri: https://icc-demo.eu.auth0.com/.well-known/jwks.json
           issuer-uri: https://icc-demo.eu.auth0.com/
+
 server:
   port: '8888'
+
 logging:
   level:
-    root: TRACE
-
+    root: DEBUG
 

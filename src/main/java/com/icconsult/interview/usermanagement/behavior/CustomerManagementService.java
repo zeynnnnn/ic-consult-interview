@@ -21,4 +21,6 @@ public interface CustomerManagementService {
 
     CustomerResponse updateCustomer(String userId, String admin, CustomerRequest newCustomerEntry);
 
+    CustomerResponse addCustomer(String email,String name, String lastName, String admin);
+
 }

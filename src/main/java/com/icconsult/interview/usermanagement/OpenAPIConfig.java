@@ -29,8 +29,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         name = "iC Consult GmbH",
                         url = "https://ic-consult.com/",
                         email = "carreer@ic-consult.com"
-                )),
-        servers = @Server(url = "${springdoc.swagger-ui.server}")
+                ),
+                version= "3.0" ),
+        servers = @Server(url = "${springdoc.swagger-ui.server}", description = "Default Server URL")
 )
 @SecurityScheme(name = "swagger_oauth", type = SecuritySchemeType.OAUTH2,
         flows = @OAuthFlows(authorizationCode = @OAuthFlow(

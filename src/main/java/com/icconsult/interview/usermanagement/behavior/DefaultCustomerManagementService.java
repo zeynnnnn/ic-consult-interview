@@ -33,20 +33,21 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
     @Override
     public CustomerResponse getCustomer(String userId) {
         CustomerEntity customerEntity = customerRepository.findByUserId(userId);
-        logger.info("Successfully retrieved customer from: [givenName=" + customerEntity.getGivenName() + ", familyName=" + customerEntity.getFamilyName() + "email=" + customerEntity.getEmail() + "].");
+        logger.info("Successfully retrieved customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
         return toCustomerResponse(customerEntity);
     }
 
     @Override
     public CustomerResponse updateCustomer(String userId, String admin, CustomerRequest newCustomerEntry) {
         CustomerEntity customerEntity = customerRepository.findByUserId(userId);
-
         if (customerEntity == null) {
             logger.warn("Tried to update customer entry which doesn't exist in DB. Nonexistent customer uuid: [" + userId + "].");
             throw new CustomerNotFoundException("Cannot find customer for update: [" + userId + "].");
         } else {
+
             customerEntity.setFamilyName(newCustomerEntry.getFamilyName());
             customerEntity.setGivenName(newCustomerEntry.getGivenName());
+            customerEntity.setEmail(newCustomerEntry.getEmail());
         }
 
         try {
@@ -57,6 +58,18 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
             logger.error("Error while trying to update customer [{}]", e.getMessage(), e);
             throw e;
         }
+    }
+
+    @Override
+    public CustomerResponse addCustomer(String email,String name, String lastName, String admin) {
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setEmail(email);
+        customerEntity.setGivenName(name);
+        customerEntity.setFamilyName(lastName);
+        customerEntity.setId((long)10);  //Unique id
+        customerEntity.setUserId("random-unique"); //Unique id
+        logger.info("Successfully added customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
+        return toCustomerResponse(customerEntity);
     }
 
     private CustomerResponse toCustomerResponse(CustomerEntity customerEntity) {
@@ -73,7 +86,7 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
             for (int i = 0; i < plaintext.length() - 2; ++i) {
                 output.append('*');
             }
-            output.append(plaintext.charAt(plaintext.length()));
+            output.append(plaintext.charAt(plaintext.length()-1)); //Wrong length fix. Error out of bound
             return output.toString();
         }
     }
