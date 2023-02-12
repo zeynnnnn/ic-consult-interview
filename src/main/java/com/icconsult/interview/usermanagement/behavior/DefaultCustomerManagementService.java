@@ -33,7 +33,12 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
     @Override
     public CustomerResponse getCustomer(String userId) {
         CustomerEntity customerEntity = customerRepository.findByUserId(userId);
-        logger.info("Successfully retrieved customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
+        if (customerEntity == null) {
+            logger.warn("Tried to get customer entry which doesn't exist in DB. Nonexistent customer uuid: [" + userId + "].");
+            throw new CustomerNotFoundException("Cannot find customer to retrieve: [" + userId + "].");
+        } else {
+            logger.info("Successfully retrieved customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
+        }
         return toCustomerResponse(customerEntity);
     }
 
@@ -62,12 +67,12 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
 
     @Override
     public CustomerResponse addCustomer(String email,String name, String lastName, String admin) {
+        System.out.println("Email: "+ email);
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.setEmail(email);
         customerEntity.setGivenName(name);
         customerEntity.setFamilyName(lastName);
-        customerEntity.setId((long)10);  //Unique id
-        customerEntity.setUserId("random-unique"); //Unique id
+        customerRepository.save(customerEntity);
         logger.info("Successfully added customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
         return toCustomerResponse(customerEntity);
     }

@@ -83,5 +83,6 @@ Possible extensions (only describe how you would implement them, no actual imple
   for certain authenticated principals
   - token differences
 - testing & documentation - what are good candidates for unit tests, integration tests, what needs to be documented?
-  - id looks random
+  - check the h2 database access without and with spring security
 - introduce additional logging and error handling where necessary
+    

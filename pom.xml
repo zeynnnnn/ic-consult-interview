@@ -18,6 +18,15 @@
     <description>Demo application with some flaws and limited functionality for conducting coding interviews.
     </description>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <properties>
         <java.version>11</java.version>
         <swagger.version>3.0.0</swagger.version>
@@ -33,16 +42,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>3.0.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -80,24 +80,13 @@
 
     </dependencies>
 
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <profiles>
-                        <profile>
-                            <id>local</id>
-                            <activation>
-                                <activeByDefault>true</activeByDefault>
-                            </activation>
-                            <properties>
-                                <spring.profiles.active>local</spring.profiles.active>
-                            </properties>
-                        </profile>
-                    </profiles>
-                </configuration>
+                <version>3.0.2</version>
             </plugin>
         </plugins>
     </build>
