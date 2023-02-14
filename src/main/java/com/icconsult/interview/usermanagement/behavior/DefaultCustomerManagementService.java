@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class DefaultCustomerManagementService implements CustomerManagementService {
 
@@ -67,13 +69,15 @@ public class DefaultCustomerManagementService implements CustomerManagementServi
 
     @Override
     public CustomerResponse addCustomer(String email,String name, String lastName, String admin) {
-        System.out.println("Email: "+ email);
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.setEmail(email);
         customerEntity.setGivenName(name);
         customerEntity.setFamilyName(lastName);
-        customerRepository.save(customerEntity);
-        logger.info("Successfully added customer from: [givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+        customerEntity.setUserId(uuidAsString);
+        customerEntity = customerRepository.saveAndFlush(customerEntity);
+        logger.info("Successfully added customer from: [ id= "+ customerEntity.getId()+ ", userid= "+ customerEntity.getUserId() + ", givenName=" + anonymizeString(customerEntity.getGivenName()) + ", familyName=" + anonymizeString(customerEntity.getFamilyName()) + "email=" + anonymizeString(customerEntity.getEmail()) + "].");
         return toCustomerResponse(customerEntity);
     }
 
